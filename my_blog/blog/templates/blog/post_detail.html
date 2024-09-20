@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p><strong>Author:</strong> {{ post.author }}</p>
+    <p><strong>Created:</strong> {{ post.created_at }}</p>
+    <h2>Comments</h2>
+    {% for comment in comments %}
+        <p>{{ comment.author }}: {{ comment.content }}</p>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+    <h2>Add a Comment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  
+        <button type="submit">Add Comment</button>
+    </form>
+</body>
+</html>
