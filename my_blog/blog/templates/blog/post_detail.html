@@ -9,11 +9,15 @@
     <p><strong>Author:</strong> {{ post.author }}</p>
     <p><strong>Created:</strong> {{ post.created_at }}</p>
     <h2>Comments</h2>
-    {% for comment in comments %}
-        <p>{{ comment.author }}: {{ comment.content }}</p>
-    {% empty %}
+    {% if comments %}
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.author }}: {{ comment.text }}</li> 
+            {% endfor %}
+        </ul>
+    {% else %}
         <p>No comments yet.</p>
-    {% endfor %}
+    {% endif %}
     <h2>Add a Comment</h2>
     <form method="post">
         {% csrf_token %}

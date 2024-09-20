@@ -23,9 +23,24 @@ def post_list_view(request):
     posts = Post.objects.all() 
     return render(request, 'blog/post_list.html', {'posts': posts})
 
+@login_required
 def post_detail_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    comments = post.comments.all() 
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)  
+            comment.post = post  
+            comment.author = request.user  
+            comment.save()  
+            return redirect('post_detail', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog/post_detail.html', {'post': post, 'form': form, 'comments': comments})
+
 
 def post_create_view(request):
     if request.method == 'POST':
